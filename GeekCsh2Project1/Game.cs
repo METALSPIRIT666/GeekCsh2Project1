@@ -28,7 +28,8 @@ namespace GeekCsh2Project1
             context = BufferedGraphicsManager.Current;
             g = form.CreateGraphics();
             Width = form.Width;
-            Height = form.Height;            buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
+            Height = form.Height;
+            buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
             Load();
             Timer timer = new Timer { Interval = 100 };
             timer.Start();
