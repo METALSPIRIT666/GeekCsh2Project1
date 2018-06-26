@@ -8,14 +8,17 @@ namespace GeekCsh2Project1
         static void Main(string[] args)
         {
             Form1 form = new Form1();
-            form.Width = 800;
-            form.Height = 600;
-
-            Game game = new Game();
-            game.Init(form);
+            Game.Init(form);
             form.Show();
-            game.Draw();
+            Game.Draw();
             Application.Run(form);
+
+            //Game game = new Game();
+            //game.Init(form);
+            //form.Show();
+            //game.Draw();
+            //Application.Run(form);
+
         }
     }
 }
