@@ -3,6 +3,11 @@ using System.Drawing;
 
 namespace GeekCsh2Project1
 {
+
+    /// <summary>
+    /// Наследник BaseObject, представляет собой белую звезду, летящую справа налево.
+    /// 
+    /// </summary>
     public class Star : BaseObject
     {
         public Star(Point pos, Point dir, Size size) : base(pos, dir, size)
@@ -19,6 +24,7 @@ namespace GeekCsh2Project1
         {
             pos.X = pos.X - dir.X;
             if (pos.X < 0) pos.X = Game.Width + size.Width;
-        }
+        }
+
     }
 }
