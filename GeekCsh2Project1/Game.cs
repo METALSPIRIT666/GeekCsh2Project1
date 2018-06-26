@@ -15,20 +15,21 @@ namespace GeekCsh2Project1
         public static int Height { get; set; }
         public static BaseObject[] objArray;
 
+        const int startingObjectsNumber = 40;
+        const int objectsNumber = 50;
+        const int leftSpawnLine = 20;
+        static int rightSpawnLine;
+        const int topSpawnLine = 10;
+        static int bottomSpawnLine;
+        const int maxSpeed = 3;
+        const int starXspeed = 5;
+        const int starYSpeed = 0;
+
         /// <summary>
         /// Создает и инициализирует игровые объекты.
         /// </summary>
-        public void Load()
+        public static void ReLoad()
         {
-            const int objectsNumber = 50;
-            const int leftSpawnLine = 20;
-            int rightSpawnLine = Width - 20;
-            const int topSpawnLine = 20;
-            int bottomSpawnLine = Height - 20;
-            const int maxSpeed = 3;
-            const int starXspeed = 5;
-            const int starYSpeed = 0;
-
             Random r = new Random();
             objArray = new BaseObject[objectsNumber];
             for (int i = 0; i < objArray.Length / 2; i++)
@@ -40,10 +41,24 @@ namespace GeekCsh2Project1
         }
 
         /// <summary>
+        /// Создает и инициализирует объекты для экрана заставки.
+        /// </summary>
+        public static void LoadSplashScreen()
+        {
+            rightSpawnLine = Width - 20;
+            bottomSpawnLine = Height - 20;
+            Random r = new Random();
+            objArray = new BaseObject[startingObjectsNumber];
+            for (int i = 0; i < objArray.Length; i++)
+                objArray[i] = new Star(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
+                    new Point(starXspeed, starYSpeed), new Size(6, 6));
+        }
+
+        /// <summary>
         /// Инициализирует графику для выбранной формы.
         /// </summary>
         /// <param name="form"></param>
-        public void Init(Form form)
+        public static void Init(Form form)
         {
             Graphics g;
             context = BufferedGraphicsManager.Current;
@@ -51,12 +66,12 @@ namespace GeekCsh2Project1
             Width = form.Width;
             Height = form.Height;
             buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
-            Load();
+            LoadSplashScreen();
             Timer timer = new Timer { Interval = 20 };
             timer.Start();
             timer.Tick += TimerTick;
         }
-        private void TimerTick(object sender, EventArgs e)
+        private static void TimerTick(object sender, EventArgs e)
         {
             Draw();
             Update();
@@ -65,7 +80,7 @@ namespace GeekCsh2Project1
         /// <summary>
         /// Выполняет отрисовку кадра.
         /// </summary>
-        public void Draw()
+        public static void Draw()
         {
             //buffer.Graphics.Clear(Color.Black);
             //buffer.Graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));
@@ -82,12 +97,13 @@ namespace GeekCsh2Project1
         /// <summary>
         /// Обновляет параметры движения игровых объектов.
         /// </summary>
-        public void Update()
+        public static void Update()
         {
             foreach (BaseObject obj in objArray)
             {
                 obj.Update();
             }
         }
+
     }
 }
