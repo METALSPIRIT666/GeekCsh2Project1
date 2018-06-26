@@ -7,7 +7,7 @@ namespace GeekCsh2Project1
     {
         static void Main(string[] args)
         {
-            Form form = new Form();
+            Form1 form = new Form1();
             form.Width = 800;
             form.Height = 600;
 
