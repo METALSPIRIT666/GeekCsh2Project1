@@ -12,13 +12,6 @@ namespace GeekCsh2Project1
             form.Show();
             Game.Draw();
             Application.Run(form);
-
-            //Game game = new Game();
-            //game.Init(form);
-            //form.Show();
-            //game.Draw();
-            //Application.Run(form);
-
         }
     }
 }

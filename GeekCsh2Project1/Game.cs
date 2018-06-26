@@ -13,7 +13,8 @@ namespace GeekCsh2Project1
         public static BufferedGraphics buffer;
         public static int Width { get; set; }
         public static int Height { get; set; }
-        public static BaseObject[] objArray;
+        private static BaseObject[] objArray;
+        private static int asteroidsCount = 10;
 
         const int startingObjectsNumber = 40;
         const int objectsNumber = 50;
@@ -32,12 +33,16 @@ namespace GeekCsh2Project1
         {
             Random r = new Random();
             objArray = new BaseObject[objectsNumber];
-            for (int i = 0; i < objArray.Length / 2; i++)
-                objArray[i] = new BaseObject(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
+
+            for (int i = 0; i < asteroidsCount; i++)
+                objArray[i] = new Asteroid(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
                     new Point(r.Next(-maxSpeed, maxSpeed), r.Next(-maxSpeed, maxSpeed)), Resource.Asteroid.Size);
-            for (int i = objArray.Length / 2; i < objArray.Length; i++)
+
+            for (int i = asteroidsCount; i < objArray.Length; i++)
                 objArray[i] = new Star(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
                     new Point(starXspeed, starYSpeed), new Size(6,6));
+
+            objArray[objArray.Length - 1] = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
         }
 
         /// <summary>
@@ -82,10 +87,6 @@ namespace GeekCsh2Project1
         /// </summary>
         public static void Draw()
         {
-            //buffer.Graphics.Clear(Color.Black);
-            //buffer.Graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));
-            //buffer.Graphics.FillEllipse(Brushes.Wheat, new Rectangle(100, 100, 200, 200));
-            //buffer.Render();
             buffer.Graphics.Clear(Color.Black);
             foreach (BaseObject obj in objArray)
             {
