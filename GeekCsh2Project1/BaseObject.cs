@@ -8,7 +8,7 @@ namespace GeekCsh2Project1
     ///  направление движения, размер и поведение,
     ///  а также всевозможное методы для его графической отрисовки.
     /// </summary>
-    public abstract class BaseObject
+    public abstract class BaseObject : ICollision
     {
         protected Point pos;
         protected Point dir;
@@ -29,5 +29,9 @@ namespace GeekCsh2Project1
         /// Обновляет поведение объекта для следующего вызова отрисовки.
         /// </summary>
         public abstract void Update();
+
+        public bool Collision(ICollision o) => o.Rect.IntersectsWith(this.Rect);
+
+        public Rectangle Rect => new Rectangle(pos, size);
     }
 }
