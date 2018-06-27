@@ -18,6 +18,7 @@ namespace GeekCsh2Project1
         private static Bullet bullet;
         private static Ship ship;
         private static Timer timer = new Timer { Interval = 20 };
+        private static int Score = 0;
 
         const int startingObjectsNumber = 100;
         const int maxMedPacksCount = 3;
@@ -130,8 +131,10 @@ namespace GeekCsh2Project1
             ship?.Draw();
             if (ship != null)
             {
-                buffer.Graphics.DrawString("Energy:" + ship.Energy,
-                    SystemFonts.DefaultFont, Brushes.White, 0, 0);
+                buffer.Graphics.DrawString($"Energy: {ship.Energy}", new Font(FontFamily.GenericSansSerif,
+            15, FontStyle.Regular), Brushes.White, 0, 0);
+                buffer.Graphics.DrawString($"Score: {Score}", new Font(FontFamily.GenericSansSerif,
+            15, FontStyle.Regular), Brushes.White, 0, 20);
             }
             buffer.Render();
         }
@@ -155,6 +158,7 @@ namespace GeekCsh2Project1
                     if (bullet != null && bullet.Collision(asteroids[i]))
                     {
                         System.Media.SystemSounds.Hand.Play();
+                        Score += asteroids[i].Power;
                         Random rnd = new Random();
                         if (rnd.Next(1, 5) == 4)
                         {
