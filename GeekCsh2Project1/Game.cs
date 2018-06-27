@@ -20,6 +20,7 @@ namespace GeekCsh2Project1
         private static Timer timer = new Timer { Interval = 20 };
 
         const int startingObjectsNumber = 100;
+        const int maxMedPacksCount = 3;
         const int objectsNumber = 70;
         const int asteroidsNumber = 120;
         const int leftSpawnLine = 20;
@@ -28,7 +29,7 @@ namespace GeekCsh2Project1
         const int topSpawnLine = 10;
         static int bottomSpawnLine;
         const int maxSpeed = 3;
-        const int starXspeed = 5;
+        const int starXSpeed = 5;
         const int starYSpeed = 0;
         const int shipSwiftness = 8;
 
@@ -47,7 +48,7 @@ namespace GeekCsh2Project1
 
             for (int i = 0; i < objArray.Length; i++)
                 objArray[i] = new Star(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
-                    new Point(starXspeed, starYSpeed), new Size(6,6));
+                    new Point(starXSpeed, starYSpeed), new Size(6,6));
 
             ship = new Ship(new Point(leftSpawnLine, midleLine), new Point(shipSwiftness, shipSwiftness), 
                     Resource.SpaceShip.Size);
@@ -65,7 +66,7 @@ namespace GeekCsh2Project1
             objArray = new BaseObject[startingObjectsNumber];
             for (int i = 0; i < objArray.Length; i++)
                 objArray[i] = new Star(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
-                    new Point(starXspeed, starYSpeed), new Size(6, 6));
+                    new Point(starXSpeed, starYSpeed), new Size(6, 6));
         }
 
         /// <summary>
@@ -148,12 +149,20 @@ namespace GeekCsh2Project1
             {
                 for (var i = 0; i < asteroids.Length; i++)
                 {
+                    if (asteroids[i] is MedPack && asteroids[i].Rect.X < 0) asteroids[i] = null;
                     if (asteroids[i] == null) continue;
                     asteroids[i].Update();
                     if (bullet != null && bullet.Collision(asteroids[i]))
                     {
                         System.Media.SystemSounds.Hand.Play();
-                        asteroids[i] = null;
+                        Random rnd = new Random();
+                        if (rnd.Next(1, 5) == 4)
+                        {
+                            asteroids[i] = new MedPack(new
+                                Point(asteroids[i].Rect.X, asteroids[i].Rect.Y),
+                                    new Point(starXSpeed, starYSpeed), Resource.MedPack.Size);
+                        }
+                        else asteroids[i] = null;
                         bullet = null;
                         continue;
                     }
