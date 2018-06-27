@@ -9,7 +9,8 @@ namespace GeekCsh2Project1
 
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
-            Power = 1;
+            var rnd = new Random();
+            Power = rnd.Next(5,10);
         }
 
         public override void Draw()
@@ -25,15 +26,6 @@ namespace GeekCsh2Project1
             if (pos.X > Game.Width - size.Width) dir.X = -dir.X;
             if (pos.Y < 0) dir.Y = -dir.Y;
             if (pos.Y > Game.Height - size.Height) dir.Y = -dir.Y;
-        }
-
-        /// <summary>
-        /// Реализует столкновение астероида и пули.
-        /// </summary>
-        /// <param name="b"></param>
-        public void Collide (Bullet b)
-        {
-            dir.X += b.Power;
         }
     }
 }
