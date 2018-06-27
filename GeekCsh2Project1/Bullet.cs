@@ -8,11 +8,8 @@ namespace GeekCsh2Project1
     /// </summary>
     class Bullet : BaseObject
     {
-        public int Power { get; set; }
-
         public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
-            Power = 5;
         }
 
         public override void Draw()

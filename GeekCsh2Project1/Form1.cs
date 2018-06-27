@@ -9,11 +9,13 @@ namespace GeekCsh2Project1
         public Form1()
         {
             InitializeComponent();
+            KeyPreview = true;
         }
 
         private void startButton_Click(object sender, EventArgs e)
         {
             Game.ReLoad();
+            Focus();
             startButton.Visible = false;
         }
 
@@ -22,5 +24,6 @@ namespace GeekCsh2Project1
             startButton.Top = (Height - startButton.Height) / 2;
             startButton.Left = (Width - startButton.Width) / 2;
         }
+
     }
 }

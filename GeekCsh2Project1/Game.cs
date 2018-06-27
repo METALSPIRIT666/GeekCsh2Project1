@@ -16,17 +16,21 @@ namespace GeekCsh2Project1
         private static BaseObject[] objArray;
         private static Asteroid[] asteroids;
         private static Bullet bullet;
+        private static Ship ship;
+        private static Timer timer = new Timer { Interval = 20 };
 
         const int startingObjectsNumber = 100;
         const int objectsNumber = 70;
         const int asteroidsNumber = 120;
         const int leftSpawnLine = 20;
         static int rightSpawnLine;
+        static int midleLine;
         const int topSpawnLine = 10;
         static int bottomSpawnLine;
         const int maxSpeed = 3;
         const int starXspeed = 5;
         const int starYSpeed = 0;
+        const int shipSwiftness = 8;
 
         /// <summary>
         /// Создает и инициализирует игровые объекты.
@@ -45,7 +49,8 @@ namespace GeekCsh2Project1
                 objArray[i] = new Star(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
                     new Point(starXspeed, starYSpeed), new Size(6,6));
 
-            bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
+            ship = new Ship(new Point(leftSpawnLine, midleLine), new Point(shipSwiftness, shipSwiftness), new
+                    Size(20, 20));
         }
 
         /// <summary>
@@ -55,6 +60,7 @@ namespace GeekCsh2Project1
         {
             rightSpawnLine = Width - 20;
             bottomSpawnLine = Height - 20;
+            midleLine = Height / 2;
             Random r = new Random();
             objArray = new BaseObject[startingObjectsNumber];
             for (int i = 0; i < objArray.Length; i++)
@@ -75,14 +81,31 @@ namespace GeekCsh2Project1
             Height = form.Height;
             buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
             LoadSplashScreen();
-            Timer timer = new Timer { Interval = 20 };
             timer.Start();
             timer.Tick += TimerTick;
+            Ship.MessageDie += Finish;
+            form.KeyDown += FormKeyDown;
         }
         private static void TimerTick(object sender, EventArgs e)
         {
             Draw();
             Update();
+        }
+
+        private static void FormKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey) bullet = new Bullet(new
+                Point(ship.Rect.X + 10, ship.Rect.Y + 4), new Point(4, 0), new Size(4, 1));
+            if (e.KeyCode == Keys.Up) ship.Up();
+            if (e.KeyCode == Keys.Down) ship.Down();
+        }
+
+        public static void Finish()
+        {
+            timer.Stop();
+            buffer.Graphics.DrawString("The End", new Font(FontFamily.GenericSansSerif,
+            60, FontStyle.Underline), Brushes.White, 200, 100);
+            buffer.Render();
         }
 
         /// <summary>
@@ -93,16 +116,22 @@ namespace GeekCsh2Project1
             buffer.Graphics.Clear(Color.Black);
             foreach (BaseObject obj in objArray)
             {
-                if (obj != null) obj.Draw();
+                obj?.Draw();
             }
             if (asteroids != null)
             {
                 foreach (Asteroid a in asteroids)
                 {
-                    if (a != null) a.Draw();
+                    a?.Draw();
                 }
             }
-            if (bullet != null) bullet.Draw();
+            bullet?.Draw();
+            ship?.Draw();
+            if (ship != null)
+            {
+                buffer.Graphics.DrawString("Energy:" + ship.Energy,
+                    SystemFonts.DefaultFont, Brushes.White, 0, 0);
+            }
             buffer.Render();
         }
 
@@ -113,25 +142,30 @@ namespace GeekCsh2Project1
         {
             foreach (BaseObject obj in objArray)
             {
-                if (obj != null) obj.Update();
+                obj?.Update();
             }
             if (asteroids != null)
             {
-                foreach (Asteroid a in asteroids)
+                for (var i = 0; i < asteroids.Length; i++)
                 {
-                    if (a != null)
+                    if (asteroids[i] == null) continue;
+                    asteroids[i].Update();
+                    if (bullet != null && bullet.Collision(asteroids[i]))
                     {
-                        a.Update();
-                        if (a.Collision(bullet))
-                        {
-                            System.Media.SystemSounds.Hand.Play();
-                            a.Collide(bullet);
-                            bullet.Return();
-                        }
-                    }   
+                        System.Media.SystemSounds.Hand.Play();
+                        asteroids[i] = null;
+                        bullet = null;
+                        continue;
+                    }
+                    if (!ship.Collision(asteroids[i])) continue;
+                    var rnd = new Random();
+                    ship?.EnergyLow(rnd.Next(1, 10));
+                    System.Media.SystemSounds.Asterisk.Play();
+                    asteroids[i] = null;
+                    if (ship.Energy <= 0) ship?.Die();
                 }
             }
-            if (bullet != null) bullet.Update();
+            bullet?.Update();
         }
 
     }

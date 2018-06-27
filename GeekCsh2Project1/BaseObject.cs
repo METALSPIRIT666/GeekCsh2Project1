@@ -20,6 +20,8 @@ namespace GeekCsh2Project1
             this.size = size;
         }
 
+        public delegate void Message();
+
         /// <summary>
         /// Отрисовывает игровой объект.
         /// </summary>
