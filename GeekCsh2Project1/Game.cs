@@ -19,7 +19,7 @@ namespace GeekCsh2Project1
 
         const int startingObjectsNumber = 100;
         const int objectsNumber = 70;
-        const int asteroidsNumber = 100;
+        const int asteroidsNumber = 120;
         const int leftSpawnLine = 20;
         static int rightSpawnLine;
         const int topSpawnLine = 10;
@@ -125,6 +125,8 @@ namespace GeekCsh2Project1
                         if (a.Collision(bullet))
                         {
                             System.Media.SystemSounds.Hand.Play();
+                            a.Collide(bullet);
+                            bullet.Return();
                         }
                     }   
                 }

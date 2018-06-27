@@ -26,5 +26,14 @@ namespace GeekCsh2Project1
             if (pos.Y < 0) dir.Y = -dir.Y;
             if (pos.Y > Game.Height - size.Height) dir.Y = -dir.Y;
         }
+
+        /// <summary>
+        /// Реализует столкновение астероида и пули.
+        /// </summary>
+        /// <param name="b"></param>
+        public void Collide (Bullet b)
+        {
+            dir.X += b.Power;
+        }
     }
 }
