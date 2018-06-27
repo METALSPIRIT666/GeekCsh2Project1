@@ -14,10 +14,12 @@ namespace GeekCsh2Project1
         public static int Width { get; set; }
         public static int Height { get; set; }
         private static BaseObject[] objArray;
-        private static int asteroidsCount = 10;
+        private static Asteroid[] asteroids;
+        private static Bullet bullet;
 
-        const int startingObjectsNumber = 40;
-        const int objectsNumber = 50;
+        const int startingObjectsNumber = 100;
+        const int objectsNumber = 70;
+        const int asteroidsNumber = 100;
         const int leftSpawnLine = 20;
         static int rightSpawnLine;
         const int topSpawnLine = 10;
@@ -33,16 +35,17 @@ namespace GeekCsh2Project1
         {
             Random r = new Random();
             objArray = new BaseObject[objectsNumber];
+            asteroids = new Asteroid[asteroidsNumber];
 
-            for (int i = 0; i < asteroidsCount; i++)
-                objArray[i] = new Asteroid(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
+            for (int i = 0; i < asteroids.Length; i++)
+                asteroids[i] = new Asteroid(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
                     new Point(r.Next(-maxSpeed, maxSpeed), r.Next(-maxSpeed, maxSpeed)), Resource.Asteroid.Size);
 
-            for (int i = asteroidsCount; i < objArray.Length; i++)
+            for (int i = 0; i < objArray.Length; i++)
                 objArray[i] = new Star(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
                     new Point(starXspeed, starYSpeed), new Size(6,6));
 
-            objArray[objArray.Length - 1] = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
+            bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
         }
 
         /// <summary>
@@ -90,8 +93,16 @@ namespace GeekCsh2Project1
             buffer.Graphics.Clear(Color.Black);
             foreach (BaseObject obj in objArray)
             {
-                obj.Draw();
+                if (obj != null) obj.Draw();
             }
+            if (asteroids != null)
+            {
+                foreach (Asteroid a in asteroids)
+                {
+                    if (a != null) a.Draw();
+                }
+            }
+            if (bullet != null) bullet.Draw();
             buffer.Render();
         }
 
@@ -102,8 +113,23 @@ namespace GeekCsh2Project1
         {
             foreach (BaseObject obj in objArray)
             {
-                obj.Update();
+                if (obj != null) obj.Update();
             }
+            if (asteroids != null)
+            {
+                foreach (Asteroid a in asteroids)
+                {
+                    if (a != null)
+                    {
+                        a.Update();
+                        if (a.Collision(bullet))
+                        {
+                            System.Media.SystemSounds.Hand.Play();
+                        }
+                    }   
+                }
+            }
+            if (bullet != null) bullet.Update();
         }
 
     }

@@ -2,9 +2,9 @@
 
 namespace GeekCsh2Project1
 {
-    interface ICollision
+    public interface ICollision
     {
-        bool Collision(ICollision obj);
-        Rectangle Rect { get; }
+         bool Collision(ICollision obj);
+         Rectangle Rect { get; }
     }
 }
