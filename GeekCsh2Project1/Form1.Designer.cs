@@ -33,6 +33,7 @@
             // 
             // startButton
             // 
+            this.startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.startButton.Location = new System.Drawing.Point(300, 180);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(200, 60);
@@ -40,6 +41,7 @@
             this.startButton.Text = "Начать игру!";
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
+            this.startButton.Paint += new System.Windows.Forms.PaintEventHandler(this.startButton_Paint);
             // 
             // Form1
             // 

@@ -7,18 +7,16 @@ namespace GeekCsh2Project1
     {
         static void Main(string[] args)
         {
-            Form1 form = new Form1();
+            Form1 form = new Form1()
+            {
+                Width = Screen.PrimaryScreen.Bounds.Width,
+                Height = Screen.PrimaryScreen.Bounds.Height
+            };
+
             Game.Init(form);
             form.Show();
             Game.Draw();
             Application.Run(form);
-
-            //Game game = new Game();
-            //game.Init(form);
-            //form.Show();
-            //game.Draw();
-            //Application.Run(form);
-
         }
     }
 }

@@ -16,5 +16,11 @@ namespace GeekCsh2Project1
             Game.ReLoad();
             startButton.Visible = false;
         }
+
+        private void startButton_Paint(object sender, PaintEventArgs e)
+        {
+            startButton.Top = (Height - startButton.Height) / 2;
+            startButton.Left = (Width - startButton.Width) / 2;
+        }
     }
 }
