@@ -49,8 +49,8 @@ namespace GeekCsh2Project1
                 objArray[i] = new Star(new Point(r.Next(leftSpawnLine, rightSpawnLine), r.Next(topSpawnLine, bottomSpawnLine)),
                     new Point(starXspeed, starYSpeed), new Size(6,6));
 
-            ship = new Ship(new Point(leftSpawnLine, midleLine), new Point(shipSwiftness, shipSwiftness), new
-                    Size(20, 20));
+            ship = new Ship(new Point(leftSpawnLine, midleLine), new Point(shipSwiftness, shipSwiftness), 
+                    Resource.SpaceShip.Size);
         }
 
         /// <summary>
@@ -158,8 +158,7 @@ namespace GeekCsh2Project1
                         continue;
                     }
                     if (!ship.Collision(asteroids[i])) continue;
-                    var rnd = new Random();
-                    ship?.EnergyLow(rnd.Next(1, 10));
+                    ship?.EnergyLow(asteroids[i].Power);
                     System.Media.SystemSounds.Asterisk.Play();
                     asteroids[i] = null;
                     if (ship.Energy <= 0) ship?.Die();

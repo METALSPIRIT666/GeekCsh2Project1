@@ -9,7 +9,8 @@ namespace GeekCsh2Project1
 
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
-            Power = 1;
+            var rnd = new Random();
+            Power = rnd.Next(5,10);
         }
 
         public override void Draw()
