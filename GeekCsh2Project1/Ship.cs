@@ -11,7 +11,7 @@ namespace GeekCsh2Project1
         /// <summary>
         /// Запас энергии корабля, при обнулении корабль терпит крушение.
         /// </summary>
-        public int Energy { get; set; } = 100;
+        public int Energy { get; set; } = 50;
 
         public Ship(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
@@ -28,8 +28,7 @@ namespace GeekCsh2Project1
 
         public override void Draw()
         {
-            Game.buffer.Graphics.FillEllipse(Brushes.Wheat, pos.X, pos.Y,
-                size.Width, size.Height);
+            Game.buffer.Graphics.DrawImage(Resource.SpaceShip, pos.X, pos.Y);
         }
 
         public override void Update()
